@@ -1,47 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import TournamentCard from "../components/TournamentCard";
+import axios from "axios";
 
 const Home = () => {
-  const tournaments = [
-    {
-      id: 1,
-      name: "PUBG Mobile Season 1",
-      image: "https://i.ibb.co/6890d9V/pubg-1.jpg",
-      entryFee: "₹100",
-      prizePool: "₹5,000",
-      matchTime: "10:00 AM IST",
-      status: "Upcoming",
-    },
-    {
-      id: 2,
-      name: "PUBG Mobile Pro League",
-      image: "https://i.ibb.co/tCKQfLh/pubg-2.jpg",
-      entryFee: "Free",
-      prizePool: "₹20,000",
-      matchTime: "02:30 PM IST",
-      status: "Live",
-    },
-    {
-      id: 3,
-      name: "PUBG Team Challenge",
-      image: "https://i.ibb.co/F83Xh8z/pubg-3.jpg",
-      entryFee: "₹50",
-      prizePool: "₹2,500",
-      matchTime: "06:00 PM IST",
-      status: "Closed",
-    },
-    {
-      id: 4,
-      name: "PUBG Squad Showdown",
-      image: "https://i.ibb.co/M9XJ039/pubg-4.jpg",
-      entryFee: "₹150",
-      prizePool: "₹7,500",
-      matchTime: "09:00 PM IST",
-      status: "Upcoming",
-    },
-  ];
+  const [tournaments, setTournaments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    axios
+      .get("https://gali-game.onrender.com/api/user/tournaments")
+      .then((res) => {
+        setTournaments(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Data fetch nhi huaa", err);
+        setLoading(false);
+      });
+  }, []);
+
+  //   const tournaments = [
+  //   {
+  //     id: 1,
+  //     name: "PUBG Mobile Season 1",
+  //     image: "https://i.ibb.co/6890d9V/pubg-1.jpg",
+  //     entryFee: "₹100",
+  //     prizePool: "₹5,000",
+  //     matchTime: "10:00 AM IST",
+  //     status: "Upcoming",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "PUBG Mobile Pro League",
+  //     image: "https://i.ibb.co/tCKQfLh/pubg-2.jpg",
+  //     entryFee: "Free",
+  //     prizePool: "₹20,000",
+  //     matchTime: "02:30 PM IST",
+  //     status: "Live",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "PUBG Team Challenge",
+  //     image: "https://i.ibb.co/F83Xh8z/pubg-3.jpg",
+  //     entryFee: "₹50",
+  //     prizePool: "₹2,500",
+  //     matchTime: "06:00 PM IST",
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "PUBG Squad Showdown",
+  //     image: "https://i.ibb.co/M9XJ039/pubg-4.jpg",
+  //     entryFee: "₹150",
+  //     prizePool: "₹7,500",
+  //     matchTime: "09:00 PM IST",
+  //     status: "Upcoming",
+  //   },
+  // ];
 
   const features = [
     {
@@ -192,7 +208,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Cards */}
         <div className="min-h-screen bg-gray-900 text-white p-8">
           <header className="text-center my-18">
             <h1 className="text-4xl font-extrabold text-blue-500 mb-2">
@@ -203,16 +218,18 @@ const Home = () => {
             </p>
           </header>
 
-          {/* Tournament Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {tournaments.map((tournament) => (
-              <TournamentCard key={tournament.id} tournament={tournament} />
-            ))}
-          </div>
+          {loading ? (
+            <p className="text-gray-400">Loading tournaments...</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {tournaments.map((tournament) => (
+                <TournamentCard key={tournament.id} tournament={tournament} />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="min-h-screen bg-gray-900 text-white p-8 font-sans">
-          {/* Header Section */}
           <header className="text-center mb-16 px-4">
             <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-4 py-1 rounded-full mb-4">
               Gully Game eSports Features
@@ -226,7 +243,6 @@ const Home = () => {
             </p>
           </header>
 
-          {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {features.map((feature) => (
               <div
