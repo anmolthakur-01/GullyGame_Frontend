@@ -13,7 +13,7 @@ const Navbar = () => {
     alert("Logout hoo gya 🙋‍♂️");
   };
   return (
-    <nav className="bg-gray-900 text-white shadow-lg shadow-red-600 [box-shadow:0_10px_15px_-3px_rgb(239_68_68_/_0.7)]">
+    <nav className="bg-gray-900 text-white ">
       <div className="container mx-auto flex justify-between items-ce20nter p-4">
         <div className="logo flex items-center pl-30">
           <Link to="/" className="text-xl font-bold">
