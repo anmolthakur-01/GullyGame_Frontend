@@ -1,0 +1,67 @@
+import React from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+
+
+const TournamentCard = ({ tournament }) => {
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Live':
+        return 'bg-green-500';
+      case 'Upcoming':
+        return 'bg-yellow-500';
+      case 'Closed':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+  const navigate  = useNavigate()
+
+  const handleNavigate = ()=>{
+    navigate('/match-detail/:id')
+  }
+
+  return (
+    <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
+      {/* Game Image */}
+      <img
+        src={tournament.image}
+        alt={tournament.name}
+        className="w-full h-48 object-cover"
+        onClick={handleNavigate}
+      />
+
+      {/* Card Content */}
+      <div className="p-4 relative">
+        {/* Status Badge */}
+        <span
+          className={`absolute top-0 right-0 -mt-2 -mr-2 px-3 py-1 text-xs font-bold text-white rounded-full ${getStatusColor(tournament.status)}`}
+        >
+          {tournament.status}
+        </span>
+
+        {/* Game Name */}
+        <h3 className="text-xl font-bold text-white mb-2">{tournament.name}</h3>
+
+        {/* Details List */}
+        <div className="space-y-2 text-gray-400 text-sm">
+          <div className="flex items-center">
+            <span className="font-semibold text-gray-200 w-24">Entry Fee:</span>
+            <span>{tournament.entryFee}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold text-gray-200 w-24">Prize Pool:</span>
+            <span className="text-yellow-400 font-bold">{tournament.prizePool}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold text-gray-200 w-24">Match Time:</span>
+            <span>{tournament.matchTime}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TournamentCard;
