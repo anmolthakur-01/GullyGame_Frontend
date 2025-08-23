@@ -1,39 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 
 const MatchDetail = () => {
-  const location = useLocation();
-  const tournament = location.state; // tournament object sent from TournamentCard
-  const [formData, setFormData] = useState({
-    tournament_id: tournament?._id || "",
-    game_id: "",
-    username: "",
-    transaction_id: "",
-    // payment_status: "pending",
-  });
+  // const [formData, setFormData] = useState({
+  //   // tournament_id: "",
+  //   game_id: "",
+  //   username: "",
+  //   transaction_id: "",
+  // });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = async (e) => {
-    debugger;
-    e.preventDefault();
-    try {
-      const res = await axios.post(
-        "https://gali-game.onrender.com/api/user/join",
-        formData
-      );
-      console.log(res.data);
-      toast.success("Bhai tuu register ho gayaa 🎉");
-    } catch (error) {
-      console.error("Form submit nhee huyaa yaar", error);
-    }
-  };
+  // const handleChange = (e) => {
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // };
+  // const handleSubmit = async (e) => {
+  //   console.log("axios se pehle", formData);
+  //   e.preventDefault();
+  //     try {
+  //       const res = await axios.post(
+  //         "https://gali-game.onrender.com/api/user/join",
+  //       formData
+  //     );
+  //     console.log(res.data);
+  //     toast.success("Bhai tuu register ho gayaa 🎉");
+  //   } catch (error) {
+  //     console.error("Form submit nhee huyaa yaar", error);
+  //   }
+  // };
 
+  const [match, setMatch] = useState([]);
+  useEffect(() => {
+    const fetchTourId = async () => {
+      try {
+        const res = await axios.get(
+          "https://gali-game.onrender.com/api/user/tournaments/"
+        );
+        setMatch(res.data);
+        console.log("res yhaa hai", res.data);
+      } catch (error) {
+        console.error("fetch nhi huaa", error);
+      }
+    };
+    fetchTourId();
+  }, []);
   return (
     <>
       <Navbar />
@@ -44,19 +55,20 @@ const MatchDetail = () => {
             Register for Tournament
           </h4>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Tournament ID */}
+          <form
+            // onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             <div>
               <input
                 type="hidden"
                 name="tournament_id"
-                value={formData.tournament_id}
+                value={match.tournament_id}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
 
-            {/* In-game ID */}
-            <div>
+            {/* <div>
               <label className="block text-gray-700 mb-1">In-game ID</label>
               <input
                 type="text"
@@ -69,7 +81,6 @@ const MatchDetail = () => {
               />
             </div>
 
-            {/* Username */}
             <div>
               <label className="block text-gray-700 mb-1">Username</label>
               <input
@@ -83,7 +94,6 @@ const MatchDetail = () => {
               />
             </div>
 
-            {/* UPI Transaction ID */}
             <div>
               <label className="block text-gray-700 mb-1">
                 UPI Transaction ID
@@ -97,20 +107,6 @@ const MatchDetail = () => {
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-            </div>
-
-            {/* Payment Status */}
-            {/* <div>
-              <label className="block text-gray-700 mb-1">Payment Status</label>
-              <select
-                name="payment_status"
-                value={formData.payment_status}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="Pending">Pending</option>
-                <option value="Success">Success</option>
-              </select>
             </div> */}
 
             <button

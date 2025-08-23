@@ -17,9 +17,7 @@ const TournamentCard = ({ tournament }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/match-detail/${tournament._id}`, {
-      state: { tournament },
-    });
+    navigate(`/match-detail/${tournament._id}`);
   };
 
   return (
@@ -40,7 +38,7 @@ const TournamentCard = ({ tournament }) => {
           {tournament.status}
         </span>
 
-        <h3 className="text-xl font-bold text-white mb-2">{tournament.name}</h3>
+        <h3 className="text-xl font-bold text-white mb-2">{tournament.tournament_id}</h3>
 
         <div className="space-y-2 text-gray-400 text-sm">
           <div className="flex items-center">
