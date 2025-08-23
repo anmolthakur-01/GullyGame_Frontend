@@ -5,6 +5,7 @@ import Signup from "./pages/auth/Signup";
 import Home from "./pages/Home";
 import MatchDetail from "./pages/MatchDetail";
 import MatchResult from "./pages/MatchResult";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/match-result" element={<MatchResult/>} />
         </Routes>
       </Router>
+      <ToastContainer/>
     </>
   )
 }

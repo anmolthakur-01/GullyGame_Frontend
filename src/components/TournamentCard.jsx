@@ -17,7 +17,9 @@ const TournamentCard = ({ tournament }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/match-detail/:id");
+    navigate(`/match-detail/${tournament._id}`, {
+      state: { tournament },
+    });
   };
 
   return (

@@ -1,47 +1,137 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const MatchDetail = () => {
+  const location = useLocation();
+  const tournament = location.state; // tournament object sent from TournamentCard
   const [formData, setFormData] = useState({
-    tournament_id: "",
-    ingame_id: "",
+    tournament_id: tournament?._id || "",
+    game_id: "",
     username: "",
     transaction_id: "",
-    payment_status: "pending",
+    // payment_status: "pending",
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
+    debugger;
     e.preventDefault();
     try {
       const res = await axios.post(
         "https://gali-game.onrender.com/api/user/join",
         formData
       );
-      console.log("Bhai tuu register ho gayaa 🎉", res.data);
+      console.log(res.data);
+      toast.success("Bhai tuu register ho gayaa 🎉");
     } catch (error) {
       console.error("Form submit nhee huyaa yaar", error);
     }
   };
 
-  const match = {
-    tournamentId: "VAL-2025-01",
-    playerIngameId: "ProGamer_007",
-    transactionId: "TXN-ABC123456",
-    screenshot: "/images/sample-screenshot.jpg",
-    paymentStatus: "Success",
-  };
-
-  const [showPopup, setShowPopup] = useState(false);
-
   return (
     <>
       <Navbar />
-      {/* <div className="min-h-screen bg-gray-900 text-white p-8">
+
+      <div className="flex justify-center items-center mt-10">
+        <div className="bg-white p-6 rounded-2xl shadow-xl w-96">
+          <h4 className="text-center text-xl font-semibold mb-6">
+            Register for Tournament
+          </h4>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Tournament ID */}
+            <div>
+              <input
+                type="hidden"
+                name="tournament_id"
+                value={formData.tournament_id}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+
+            {/* In-game ID */}
+            <div>
+              <label className="block text-gray-700 mb-1">In-game ID</label>
+              <input
+                type="text"
+                name="game_id"
+                placeholder="Enter In-game ID"
+                value={formData.game_id}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+
+            {/* Username */}
+            <div>
+              <label className="block text-gray-700 mb-1">Username</label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter Username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+
+            {/* UPI Transaction ID */}
+            <div>
+              <label className="block text-gray-700 mb-1">
+                UPI Transaction ID
+              </label>
+              <input
+                type="text"
+                name="transaction_id"
+                placeholder="Enter UPI Transaction ID"
+                value={formData.transaction_id}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+
+            {/* Payment Status */}
+            {/* <div>
+              <label className="block text-gray-700 mb-1">Payment Status</label>
+              <select
+                name="payment_status"
+                value={formData.payment_status}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Success">Success</option>
+              </select>
+            </div> */}
+
+            <button
+              type="submit"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <Footer />
+    </>
+  );
+};
+
+export default MatchDetail;
+
+{
+  /* <div className="min-h-screen bg-gray-900 text-white p-8">
         <div className="max-w-3xl mx-auto bg-gray-800 rounded-2xl shadow-xl p-6">
           <h1 className="text-3xl font-bold text-indigo-400 mb-6 text-center">
             Match Details
@@ -134,95 +224,5 @@ const MatchDetail = () => {
             </div>
           </div>
         )}
-      </div> */}
-
-      <div className="bg-gray-900 flex justify-center items-center">
-        <div className=" bg-white p-6 rounded-2xl shadow-xl w-96">
-          <h4 className="text-center text-xl font-semibold mb-6 ">
-            Register for Tournament
-          </h4>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-gray-700 mb-1">Tournament ID</label>
-              <input
-                type="text"
-                name="tournamentId"
-                placeholder="Enter Tournament ID"
-                value={formData.tournament_id}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 mb-1">In-game ID</label>
-              <input
-                type="text"
-                name="ingameId"
-                placeholder="Enter In-game ID"
-                value={formData.ingame_id}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 mb-1">Username</label>
-              <input
-                type="text"
-                name="username"
-                placeholder="Enter Username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 mb-1">
-                UPI Transaction ID
-              </label>
-              <input
-                type="text"
-                name="upiTransId"
-                placeholder="Enter UPI Transaction ID"
-                value={formData.transaction_id}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 mb-1">Payment Status</label>
-              <select
-                name="paymentStatus"
-                value={formData.payment_status}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="Pending">Pending</option>
-                <option value="Success">Success</option>
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <Footer />
-    </>
-  );
-};
-
-export default MatchDetail;
+      </div> */
+}

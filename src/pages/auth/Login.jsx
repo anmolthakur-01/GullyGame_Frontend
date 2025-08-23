@@ -17,20 +17,23 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = axios.post("http://192.168.1.14:8000/login", formData);
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
+      const response = await axios.post(
+        "https://gali-game.onrender.com/api/user/login",
+        formData
+      );
+      if (response.status) {
+        localStorage.setItem("Token: ", response.data.token);
         console.log("User login successfully:", response.data);
         navigate("/");
         toast.success("Login ho gya 🫡");
       }
     } catch (error) {
       console.log("errro aa gya 🤬");
-        toast.error("Invalid username or password 🤬");
-   }
+      toast.error("Invalid username or password 🤬");
+    }
   };
 
   return (
@@ -47,7 +50,7 @@ const Login = () => {
             <div className="flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Login</h1>
               <div className="w-full flex-1 mt-8">
-               {/* <div className="flex flex-col items-center">
+                {/* <div className="flex flex-col items-center">
                    <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                     <div className="bg-white p-2 rounded-full">
                       <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -95,7 +98,7 @@ const Login = () => {
                     onChange={handleChange}
                   />
                   <button
-                    className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none cursor-pointer"
                     onClick={handleSubmit}
                   >
                     <svg
