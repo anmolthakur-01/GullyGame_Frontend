@@ -24,8 +24,9 @@ const Login = () => {
         "https://gali-game.onrender.com/api/user/login",
         formData
       );
-      if (response.status) {
-        localStorage.setItem("Token: ", response.data.token);
+      if (response.status === 200) {
+        console.log("set item se pehle token:", response.data);
+        localStorage.setItem("Token: ", response.data);
         console.log("User login successfully:", response.data);
         navigate("/");
         toast.success("Login ho gya 🫡");
