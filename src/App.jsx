@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/match-result" element={<MatchResult/>} />
         </Routes>
       </Router>
-      <ToastContainer/>
+      <ToastContainer autoClose={1500} />
     </>
   )
 }

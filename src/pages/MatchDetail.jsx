@@ -29,9 +29,11 @@ const MatchDetail = () => {
         "https://gali-game.onrender.com/api/user/join",
         formData
       );
+      toast.success("Bhai tuu register ho gayaa 🎉");
       console.log("form submit hoo hya", res.data);
     } catch (error) {
       console.error("Form submit nhee huyaa yaar", error);
+      toast.error("Login karke dubara try kar!");
     }
   };
 
@@ -39,7 +41,7 @@ const MatchDetail = () => {
     <>
       <Navbar />
 
-      <div className="flex justify-center items-center mt-10">
+      <div className="flex justify-center items-center h-155">
         <div className="bg-white p-6 rounded-2xl shadow-xl w-96">
           <h4 className="text-center text-xl font-semibold mb-6">
             Register for Tournament
@@ -106,7 +108,7 @@ const MatchDetail = () => {
             </div> */}
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 cursor-pointer  "
             >
               Submit
             </button>

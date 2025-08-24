@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const [showProfile, setShowProfile] = useState(false);
+  // const [showProfile, setShowProfile] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const savedToken = localStorage.getItem("Token");
+    if (savedToken) {
+      setUser(savedToken);
+    }
+  }, []);
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
 
   const handleLogout = () => {
-    alert("Logout hoo gya 🙋‍♂️");
+    localStorage.removeItem("Token");
+    setUser(null);
+    window.location.href = "/";
+    toast.success("Chalo, phir aana!");
   };
   return (
     <nav className="bg-gray-900 text-white ">
@@ -32,7 +43,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {!showProfile ? (
+        {!user ? (
           <div className="space-x-4 pr-20">
             <button className="inline-block px-4 py-2 bg-red-700 text-white rounded hover:bg-red-800 ">
               <Link to="/login" className="hover:text-gray-300">
@@ -68,13 +79,12 @@ const Navbar = () => {
                   <div className="font-medium truncate">name@flowbite.com</div>
                 </div>
                 <div className="py-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  <button
+                    className="w-full block px-4 py-2 text-sm  text-gray-700 hover:bg-red-700 dark:hover:bg-red-700 dark:text-gray-200 hover:rounded-sm cursor-pointer"
                     onClick={handleLogout}
                   >
                     Sign out
-                  </a>
+                  </button>
                 </div>
               </div>
             )}

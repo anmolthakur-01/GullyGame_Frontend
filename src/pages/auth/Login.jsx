@@ -25,11 +25,11 @@ const Login = () => {
         formData
       );
       if (response.status === 200) {
-        console.log("set item se pehle token:", response.data);
-        localStorage.setItem("Token: ", response.data);
+        // console.log("set item se pehle token:", response.data);
+        localStorage.setItem("Token", response.data);
         console.log("User login successfully:", response.data);
         navigate("/");
-        toast.success("Login ho gya 🫡");
+        toast.success("Apka swagat hai! 🙋‍♂️");
       }
     } catch (error) {
       console.log("errro aa gya 🤬");
