@@ -7,10 +7,9 @@ import { useLocation } from "react-router-dom";
 
 const MatchDetail = () => {
   const location = useLocation();
-  const [cred, setCred] = useState([]);
+  const [data, setData] = useState();
   const tournamentId = location.state?.tournament_id;
   const [showPopup, setShowPopup] = useState(false);
-  console.log(setCred)
 
   const [formData, setFormData] = useState({
     tournament_id: tournamentId || "",
@@ -35,6 +34,7 @@ const MatchDetail = () => {
           },
         }
       );
+      console.log("Register successful", res.data);
       // Then, fetch room credentials
       const credRes = await axios.get(
         `https://gali-game.onrender.com/api/user/rooms-creds/${tournamentId}`,
@@ -44,22 +44,25 @@ const MatchDetail = () => {
           },
         }
       );
-      setCred(credRes.data);
-      console.log("Room credentials fetched:", credRes.data);
+      console.log("Room Creds Response:", credRes.data.creds);
+      setData(credRes.data.creds);
 
-      console.log("form submit hoo hya", res.data);
-      // Show the popup only when both succeed
-      setShowPopup(true);
+      toast.success("Registered and fetched room details!");
+
+      setShowPopup(true); // Show the popup only when both succeed
     } catch (error) {
-      console.error("Form submit nhee huyaa yaar", error.message);
-      toast.error("Login karke dubara try kar!");
+      console.error(
+        "Form submit nhee huyaa yaar",
+        error.response?.data || error.message
+      );
+      toast.error(
+        error.response?.data?.message || "Login karke dubara try kar!"
+      );
     }
   };
-
   return (
     <>
       <Navbar />
-
       <div className="flex justify-center items-center h-155">
         <div className="bg-white p-6 rounded-2xl shadow-xl w-96">
           <h4 className="text-center text-xl font-semibold mb-6">
@@ -118,8 +121,9 @@ const MatchDetail = () => {
             </button>
           </div> */}
         </div>
+
         {showPopup && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="fixed inset-0 flex items-center justify-center h-156 mt-18 bg-black bg-opacity-50 z-50">
             <div className="bg-gray-800 rounded-2xl p-6 w-96 shadow-lg">
               <h2 className="text-xl font-bold text-indigo-400 mb-4 text-center">
                 Room Details
@@ -134,23 +138,15 @@ const MatchDetail = () => {
               <p className="mb-2">
                 <span className="font-semibold text-indigo-300">Room ID:</span>
                 {/* <span className="ml-2">{match.roomId}</span> */}
-                <span className="ml-2 text-white">{cred.room_id}</span>
+                <span className="ml-2 text-white">{data.room_id || "***"}</span>
               </p>
               <p className="mb-4">
                 <span className="font-semibold text-indigo-300">
                   Room Password:
                 </span>
                 {/* <span className="ml-2">{match.roomPassword}</span> */}
-                <span className="ml-2 text-white">{cred.passwd}</span>
+                <span className="ml-2 text-white">{data.passwd || "***"}</span>
               </p>
-              {/* <div className="text-center">
-                <button
-                  onClick={() => setShowPopup(false)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
-                >
-                  Close
-                </button>
-              </div> */}
             </div>
           </div>
         )}
