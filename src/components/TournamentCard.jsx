@@ -18,17 +18,21 @@ const TournamentCard = ({ tournament }) => {
 
   const handleNavigate = () => {
     navigate(`/match-detail/${tournament._id}`, {
-      state: { tournament_id: tournament.tournament_id }, // passing only the tounament_id
+      state: {
+        tournament_id: tournament.tournament_id,
+      }, // passing only the tounament_id
     });
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 cursor-pointer" onClick={handleNavigate}>
+    <div
+      className="bg-gray-800 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 cursor-pointer"
+      onClick={handleNavigate}
+    >
       <img
         src={"https://www.cdmi.in/courses@2x/2D3D-Game-Design.webp"}
         alt={tournament.game_name}
         className="w-full h-48 object-cover"
-       
       />
 
       <div className="p-4 relative">

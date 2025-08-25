@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar"; 
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -7,13 +7,14 @@ import { useLocation } from "react-router-dom";
 
 const MatchDetail = () => {
   const location = useLocation();
+  const [cred, setCred] = useState([]);
   const tournamentId = location.state?.tournament_id;
   const [showPopup, setShowPopup] = useState(false);
+  console.log(setCred)
 
   const [formData, setFormData] = useState({
     tournament_id: tournamentId || "",
     game_id: "",
-    username: "",
     transaction_id: "",
   });
 
@@ -34,10 +35,23 @@ const MatchDetail = () => {
           },
         }
       );
-      toast.success("Bhai tuu register ho gayaa 🎉");
+      // Then, fetch room credentials
+      const credRes = await axios.get(
+        `https://gali-game.onrender.com/api/user/rooms-creds/${tournamentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${savedToken}`,
+          },
+        }
+      );
+      setCred(credRes.data);
+      console.log("Room credentials fetched:", credRes.data);
+
       console.log("form submit hoo hya", res.data);
+      // Show the popup only when both succeed
+      setShowPopup(true);
     } catch (error) {
-      console.error("Form submit nhee huyaa yaar", error);
+      console.error("Form submit nhee huyaa yaar", error.message);
       toast.error("Login karke dubara try kar!");
     }
   };
@@ -74,18 +88,6 @@ const MatchDetail = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-1">Username</label>
-              <input
-                type="text"
-                name="username"
-                placeholder="Enter Username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <div>
               <label className="block text-gray-700 mb-1">
                 UPI Transaction ID
               </label>
@@ -107,14 +109,14 @@ const MatchDetail = () => {
               Submit
             </button>
           </form>
-           <div className="mt-6 text-center ">
+          {/* <div className="mt-6 text-center ">
             <button
               onClick={() => setShowPopup(true)}
               className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-xl transition cursor-pointer"
             >
               See Room Details
             </button>
-          </div>
+          </div> */}
         </div>
         {showPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -127,28 +129,28 @@ const MatchDetail = () => {
                   Tournament Name:
                 </span>
                 {/* <span className="ml-2">{match.tournamentName}</span> */}
-                <span className="ml-2 text-white">Pro League</span>
+                <span className="ml-2 text-white">{"***"}</span>
               </p>
               <p className="mb-2">
                 <span className="font-semibold text-indigo-300">Room ID:</span>
                 {/* <span className="ml-2">{match.roomId}</span> */}
-                <span className="ml-2 text-white">123321</span>
+                <span className="ml-2 text-white">{cred.room_id}</span>
               </p>
               <p className="mb-4">
                 <span className="font-semibold text-indigo-300">
                   Room Password:
                 </span>
                 {/* <span className="ml-2">{match.roomPassword}</span> */}
-                <span className="ml-2 text-white">33445</span>
+                <span className="ml-2 text-white">{cred.passwd}</span>
               </p>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <button
                   onClick={() => setShowPopup(false)}
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
                 >
                   Close
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -160,7 +162,6 @@ const MatchDetail = () => {
 };
 
 export default MatchDetail;
-
 
 {
   /* <div className="min-h-screen bg-gray-900 text-white p-8">

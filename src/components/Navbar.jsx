@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("Token");
+    sessionStorage.removeItem("token");
     setUser(null);
     window.location.href = "/";
     toast.success("Chalo, phir aana!");
