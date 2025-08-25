@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
-  // const [showProfile, setShowProfile] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const savedToken = localStorage.getItem("Token");
+    const savedToken = sessionStorage.getItem("token");
     if (savedToken) {
       setUser(savedToken);
     }
@@ -18,7 +17,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("Token");
+    sessionStorage.removeItem("Token");
     setUser(null);
     window.location.href = "/";
     toast.success("Chalo, phir aana!");

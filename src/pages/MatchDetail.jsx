@@ -6,16 +6,15 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 
 const MatchDetail = () => {
-  const locatioin = useLocation();
-  const tournamentId = locatioin.state?.tournament_id;
+  const location = useLocation();
+  const tournamentId = location.state?.tournament_id;
   // console.log(tournamentId);
 
   const [formData, setFormData] = useState({
-    tournamernt_id: tournamentId || "",
+    tournament_id: tournamentId || "",
     game_id: "",
     username: "",
     transaction_id: "",
-    // payment_status: "",
   });
 
   const handleChange = (e) => {
@@ -24,10 +23,16 @@ const MatchDetail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const savedToken = sessionStorage.getItem("token");
     try {
       const res = await axios.post(
         "https://gali-game.onrender.com/api/user/join",
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${savedToken}`,
+          },
+        }
       );
       toast.success("Bhai tuu register ho gayaa 🎉");
       console.log("form submit hoo hya", res.data);
@@ -47,7 +52,7 @@ const MatchDetail = () => {
             Register for Tournament
           </h4>
 
-          <form className="space-y-4" onClick={handleSubmit}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <input
                 type="hidden"
@@ -94,18 +99,7 @@ const MatchDetail = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
-            {/* <div>
-              <label className="block text-gray-700 mb-1">Payment Status</label>
-              <input
-                type="text"
-                name="transaction_id"
-                placeholder="True or False"
-                value={formData.payment_status}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div> */}
+
             <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 cursor-pointer  "

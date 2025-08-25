@@ -24,16 +24,16 @@ const Login = () => {
         "https://gali-game.onrender.com/api/user/login",
         formData
       );
+      console.log(response.data);
       if (response.status === 200) {
-        // console.log("set item se pehle token:", response.data);
-        localStorage.setItem("Token", response.data);
+        sessionStorage.setItem("token", response.data.access_token);
         console.log("User login successfully:", response.data);
         navigate("/");
         toast.success("Apka swagat hai! 🙋‍♂️");
       }
     } catch (error) {
-      console.log("errro aa gya 🤬");
-      toast.error("Invalid username or password 🤬");
+      console.log("errro aa gya bhai:", error);
+      toast.error("Invalid username or password");
     }
   };
 
