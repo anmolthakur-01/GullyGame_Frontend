@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import MatchDetail from "./pages/MatchDetail";
 import MatchResult from "./pages/MatchResult";
 import { ToastContainer } from "react-toastify";
+import Contact from "./pages/Contact";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/" element={<Home/>} />
           <Route path="/match-detail/:id" element={<MatchDetail/>} />
           <Route path="/match-result" element={<MatchResult/>} />
+          <Route path="/contact" element={<Contact/>} />
         </Routes>
       </Router>
       <ToastContainer autoClose={1500} />
