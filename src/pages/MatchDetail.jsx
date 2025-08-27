@@ -458,6 +458,7 @@ const MatchDetail = () => {
   const [alreadyJoined, setAlreadyJoined] = useState(false);
   const [showResultPopup, setShowResultPopup] = useState(false);
   const [resultData, setResultData] = useState(null);
+  console.log(resultData)
 
   const [formData, setFormData] = useState({
     tournament_id: tournamentId || "",
@@ -535,9 +536,10 @@ const MatchDetail = () => {
   const fetchMatchResult = async () => {
     try {
       const res = await axios.get(
-        `https://gali-game.onrender.com/api/user/result/${tournamentId}`
+        `https://gali-game.onrender.com/api/user/result?tournament_id=${tournamentId}`
       );
-      setResultData(res.data.result);
+      console.log(res.data)
+      setResultData(res.data);
       setShowPopup(false); // Hide room popup
       setShowResultPopup(true); // Show result popup
     } catch (err) {
